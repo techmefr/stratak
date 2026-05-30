@@ -20,12 +20,38 @@ export interface KeyboardLayout {
 
 export class KeymapParser {
     static parseVial(json: any): KeyboardLayout {
-        // Simple mock parser for now
-        // In a real scenario, this would transform Vial/QMK JSON into our KeyboardLayout
-        return {
-            name: json.name || 'Default Layout',
-            layers: json.layers || []
-        };
+        if (!json) throw new Error('Invalid JSON');
+
+        const name = json.name || 'Custom Layout';
+        const layers: Layer[] = [];
+
+        if (json.layers && Array.isArray(json.layers)) {
+            json.layers.forEach((layerData: any, index: number) => {
+                // Vial/QMK layers are often flat arrays or nested
+                // We'll try to reconstruct a 3x5+3 or similar if we can, 
+                // but for now let's just take what's there.
+                
+                let keys: string[][] = [];
+                if (Array.isArray(layerData) && Array.isArray(layerData[0])) {
+                    // Already nested
+                    keys = layerData.map(row => row.map(k => String(k)));
+                } else if (Array.isArray(layerData)) {
+                    // Flat array, let's assume a default split width (e.g. 10 per row)
+                    const rowWidth = 10;
+                    for (let i = 0; i < layerData.length; i += rowWidth) {
+                        keys.push(layerData.slice(i, i + rowWidth).map(k => String(k)));
+                    }
+                }
+
+                layers.push({
+                    id: index,
+                    name: `Layer ${index}`,
+                    keys
+                });
+            });
+        }
+
+        return { name, layers };
     }
 
     static getDefault3x5_3(): KeyboardLayout {
