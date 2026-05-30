@@ -9,9 +9,20 @@ class AppState {
     errors = $state(0);
     isFinished = $state(false);
     text = $state('Hello world! Welcome to Stratak.');
+    activeKey = $state<string | null>(null);
+    currentLayer = $state(0);
 
     constructor() {
         this.engine.setText(this.text);
+    }
+
+    handleKeyDown(key: string) {
+        this.activeKey = key.toUpperCase();
+        this.handleKey(key);
+    }
+
+    handleKeyUp() {
+        this.activeKey = null;
     }
 
     handleKey(key: string) {

@@ -1,6 +1,7 @@
 <script lang="ts">
     import KeyboardListener from '../ui/components/KeyboardListener.svelte';
     import PracticeArea from '../ui/components/PracticeArea.svelte';
+    import Keyboard from '../ui/components/Keyboard.svelte';
     import '../routes/layout.css';
 </script>
 
@@ -13,8 +14,9 @@
             <p class="text-gray-500">Progressive learning for custom keyboards</p>
         </header>
 
-        <section class="w-full">
+        <section class="w-full flex flex-col items-center">
             <PracticeArea />
+            <Keyboard />
         </section>
 
         <footer class="mt-24 text-gray-600 text-sm">
