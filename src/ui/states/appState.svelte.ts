@@ -1,4 +1,5 @@
 import { TypingEngine } from '../../domain/typingEngine';
+import { KeymapParser, type KeyboardLayout } from '../../domain/keymapParser';
 
 class AppState {
     engine = new TypingEngine('Hello world! Welcome to Stratak.');
@@ -13,9 +14,15 @@ class AppState {
     activeKey = $state<string | null>(null);
     currentLayer = $state(0);
     hasError = $state(false);
+    layout = $state<KeyboardLayout>(KeymapParser.getDefault3x5_3());
 
     constructor() {
         this.engine.setText(this.text);
+    }
+
+    setLayout(newLayout: KeyboardLayout) {
+        this.layout = newLayout;
+        this.currentLayer = 0;
     }
 
     handleKeyDown(key: string) {

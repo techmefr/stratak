@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { KeymapParser } from '../../domain/keymapParser';
     import { appState } from '../states/appState.svelte';
 
-    const layout = KeymapParser.getDefault3x5_3();
-    let currentLayer = $derived(layout.layers[appState.currentLayer]);
+    let currentLayer = $derived(appState.layout.layers[appState.currentLayer]);
 
     function isKeyActive(key: string) {
         return appState.activeKey === key.toUpperCase();
@@ -12,7 +10,7 @@
 
 <div class="flex flex-col items-center gap-4 mt-12 p-8 bg-gray-900/50 rounded-2xl border border-white/5">
     <div class="flex gap-4 mb-4">
-        {#each layout.layers as layer, i}
+        {#each appState.layout.layers as layer, i}
             <button 
                 onclick={() => appState.currentLayer = i}
                 class="px-3 py-1 rounded text-xs font-bold transition-colors"
