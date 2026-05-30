@@ -11,6 +11,8 @@ export class TypingEngine {
     private currentIndex: number = 0;
     private errors: number = 0;
     private correct: number = 0;
+    private startTime: number | null = null;
+    private endTime: number | null = null;
 
     constructor(text: string = '') {
         this.text = text;
@@ -21,11 +23,17 @@ export class TypingEngine {
         this.currentIndex = 0;
         this.errors = 0;
         this.correct = 0;
+        this.startTime = null;
+        this.endTime = null;
     }
 
     processKey(key: string): { isCorrect: boolean; isFinished: boolean } {
         if (this.currentIndex >= this.text.length) {
             return { isCorrect: false, isFinished: true };
+        }
+
+        if (this.startTime === null) {
+            this.startTime = Date.now();
         }
 
         const target = this.text[this.currentIndex];
@@ -38,17 +46,33 @@ export class TypingEngine {
             this.errors++;
         }
 
+        const isFinished = this.currentIndex === this.text.length;
+        if (isFinished && this.endTime === null) {
+            this.endTime = Date.now();
+        }
+
         return {
             isCorrect,
-            isFinished: this.currentIndex === this.text.length
+            isFinished
         };
     }
 
     getStats(): TypingStats {
         const total = this.correct + this.errors;
+        const accuracy = total === 0 ? 100 : (this.correct / total) * 100;
+        
+        let wpm = 0;
+        if (this.startTime !== null) {
+            const end = this.endTime || Date.now();
+            const elapsedMinutes = (end - this.startTime) / 60000;
+            if (elapsedMinutes > 0) {
+                wpm = (this.correct / 5) / elapsedMinutes;
+            }
+        }
+
         return {
-            accuracy: total === 0 ? 100 : (this.correct / total) * 100,
-            wpm: 0, // TODO: Implement WPM calculation with timing
+            accuracy,
+            wpm,
             errors: this.errors,
             correct: this.correct,
             total

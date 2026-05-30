@@ -7,10 +7,12 @@ class AppState {
     currentIndex = $state(0);
     accuracy = $state(100);
     errors = $state(0);
+    wpm = $state(0);
     isFinished = $state(false);
     text = $state('Hello world! Welcome to Stratak.');
     activeKey = $state<string | null>(null);
     currentLayer = $state(0);
+    hasError = $state(false);
 
     constructor() {
         this.engine.setText(this.text);
@@ -34,7 +36,9 @@ class AppState {
         this.currentIndex = this.engine.getCurrentIndex();
         this.accuracy = stats.accuracy;
         this.errors = stats.errors;
+        this.wpm = stats.wpm;
         this.isFinished = result.isFinished;
+        this.hasError = !result.isCorrect;
     }
 
     reset(newText?: string) {
@@ -43,7 +47,9 @@ class AppState {
         this.currentIndex = 0;
         this.accuracy = 100;
         this.errors = 0;
+        this.wpm = 0;
         this.isFinished = false;
+        this.hasError = false;
     }
 }
 
