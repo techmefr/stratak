@@ -39,11 +39,7 @@
         ondrop={onDrop}
     >
         <div 
-            class="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-xl transition-all duration-200"
-            class:border-yellow-400={isOver}
-            class:bg-yellow-400/5={isOver}
-            class:border-gray-800={!isOver}
-            class:hover:border-gray-700={!isOver}
+            class="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-xl transition-all duration-200 {isOver ? 'border-yellow-400 bg-yellow-400/5' : 'border-gray-800 hover:border-gray-700'}"
         >
             <svg class="w-8 h-8 mb-3 text-gray-500 group-hover:text-gray-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
