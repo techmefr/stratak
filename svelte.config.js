@@ -13,8 +13,7 @@ const config = {
 		}),
 
 		paths: {
-			base: '/stratak',
-			assets: '/stratak'
+			base: '/stratak'
 		}
 	}
 };
